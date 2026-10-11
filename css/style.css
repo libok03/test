@@ -10,12 +10,7 @@ body{margin:0;background:var(--bg);color:var(--ink);
   line-height:1.5;padding:0 clamp(14px,4vw,40px) 64px}
 header.top,.tabs,main{max-width:980px;margin-inline:auto}
 header.top{padding:36px 0 18px}
-.topline{display:flex;align-items:center;justify-content:space-between;gap:16px}
 .hello{margin:0 0 4px;font-weight:700;color:var(--navy)}
-.editor-link{display:inline-flex;align-items:center;min-height:42px;padding:0 18px;border:2px solid var(--navy);
-  border-radius:999px;color:var(--navy);background:rgba(255,255,255,.55);font-weight:700;text-decoration:none}
-.editor-link:hover{background:var(--white)}
-.editor-link:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
 h1{font-family:Merriweather,Georgia,serif;font-weight:900;font-size:clamp(28px,6vw,44px);line-height:1.15;margin:0 0 8px}
 .sub{margin:0;color:#4a5280}
 
