@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>프랑스어 발음 연습</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Nunito+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="topline">
+      <p class="hello">Bonjour&nbsp;! 👋</p>
+      <a class="editor-link" href="editor.html">레슨 편집하기</a>
+    </div>
+    <h1>프랑스어 발음 연습</h1>
+    <p class="sub">차시를 고르고, 카드를 눌러 들어 보세요. 몇 번이든 다시 들을 수 있어요.</p>
+  </header>
+
+  <nav id="tabs" class="tabs" aria-label="차시 선택"></nav>
+
+  <main>
+    <p id="current" class="current"></p>
+    <div id="content"></div>
+  </main>
+
+  <!-- 1) 앱 코드 → 2) 차시 데이터는 app.js 가 lesson1.js, lesson2.js … 순서로 자동으로 불러옵니다 -->
+  <script src="js/app.js"></script>
+</body>
+</html>

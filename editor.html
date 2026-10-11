@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>프랑스어 레슨 편집기</title>
+  <link rel="stylesheet" href="css/editor.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <a class="back" href="index.html">← 학습 화면</a>
+      <h1>레슨 편집기 <span>Studio</span></h1>
+      <p>레슨을 만들고 음성을 넣은 뒤, 저장하거나 ZIP으로 내보내세요.</p>
+    </div>
+    <div class="header-actions">
+      <button class="button github" id="github-save" type="button">GitHub에 저장</button>
+      <button class="button ghost" id="github-settings" type="button">연결 설정</button>
+      <details class="more-actions">
+        <summary class="button ghost">백업 · 가져오기</summary>
+        <div class="action-menu">
+          <button id="open-folder" type="button">사이트 폴더 연결</button>
+          <label class="file-button">ZIP 불러오기<input id="zip-input" type="file" accept=".zip,application/zip"></label>
+          <button id="save-folder" type="button">폴더에 저장</button>
+          <button id="export-zip" type="button">완성 ZIP 내보내기</button>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <div class="statusbar">
+    <span id="connection-dot" class="status-dot"></span>
+    <span id="status">편집할 준비가 됐어요.</span>
+  </div>
+
+  <div class="workspace">
+    <aside class="sidebar">
+      <div class="sidebar-title">
+        <div><span class="eyebrow">CURRICULUM</span><h2>레슨</h2></div>
+        <button class="icon-button add" id="add-lesson" type="button" aria-label="새 레슨 추가">＋</button>
+      </div>
+      <div id="lesson-list" class="lesson-list" role="list"></div>
+      <div class="sidebar-help">
+        <strong>저장 방법</strong>
+        <p><b>폴더에 저장</b>은 연결한 사이트 폴더를 바로 고칩니다. <b>ZIP 내보내기</b>는 공유용 새 파일을 만듭니다.</p>
+      </div>
+    </aside>
+
+    <main id="editor-main" class="editor-main">
+      <div id="empty-state" class="empty-state" hidden>
+        <div class="empty-icon">＋</div>
+        <h2>첫 레슨을 만들어 보세요</h2>
+        <p>왼쪽의 + 버튼을 누르면 바로 시작할 수 있어요.</p>
+      </div>
+      <div id="lesson-editor" hidden>
+        <section class="lesson-heading panel">
+          <div class="field grow">
+            <label for="lesson-title">레슨 이름</label>
+            <input id="lesson-title" type="text" placeholder="예: 7차시">
+          </div>
+          <div class="field number-field">
+            <label for="lesson-number">번호</label>
+            <input id="lesson-number" type="number" min="1" max="999">
+          </div>
+          <button class="button danger-text" id="delete-lesson" type="button">레슨 삭제</button>
+        </section>
+
+        <div id="section-list" class="section-list"></div>
+        <button class="add-section" id="add-section" type="button"><span>＋</span> 새 섹션 추가</button>
+      </div>
+    </main>
+  </div>
+
+  <dialog id="confirm-dialog">
+    <form method="dialog">
+      <h2 id="confirm-title">삭제할까요?</h2>
+      <p id="confirm-message"></p>
+      <div class="dialog-actions">
+        <button class="button ghost" value="cancel">취소</button>
+        <button class="button danger" value="confirm">삭제</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="github-dialog" class="settings-dialog">
+    <form method="dialog" id="github-form">
+      <div class="dialog-kicker">처음 한 번만 설정</div>
+      <h2>GitHub 연결</h2>
+      <p>저장소 정보와 해당 저장소에만 권한을 준 토큰을 입력하세요. 이후에는 위의 <b>GitHub에 저장</b> 버튼만 누르면 됩니다.</p>
+      <div class="settings-grid">
+        <div class="field"><label for="github-owner">GitHub 사용자 또는 조직</label><input id="github-owner" required placeholder="예: markp"></div>
+        <div class="field"><label for="github-repo">저장소 이름</label><input id="github-repo" required placeholder="예: french-audio-site"></div>
+        <div class="field"><label for="github-branch">배포 브랜치</label><input id="github-branch" required value="main"></div>
+        <div class="field"><label for="github-path">사이트 폴더 <span>(저장소 루트면 비워두기)</span></label><input id="github-path" placeholder="예: docs"></div>
+        <div class="field token-field"><label for="github-token">Fine-grained access token</label><input id="github-token" required type="password" autocomplete="off" placeholder="github_pat_…"></div>
+      </div>
+      <label class="remember"><input id="github-remember" type="checkbox"> 이 개인 기기에서 토큰 기억하기</label>
+      <p class="token-help">토큰은 사이트나 저장소에 업로드되지 않습니다. 공유 컴퓨터에서는 기억하기를 선택하지 마세요.</p>
+      <div id="github-test-result" class="test-result" aria-live="polite"></div>
+      <div class="dialog-actions split">
+        <a class="token-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">토큰 만들기 ↗</a>
+        <div>
+          <button class="button ghost" value="cancel" type="button" id="github-cancel">취소</button>
+          <button class="button github" type="submit">연결 확인</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="vendor/jszip.min.js"></script>
+  <script src="vendor/json5.min.js"></script>
+  <script src="js/editor.js"></script>
+</body>
+</html>
