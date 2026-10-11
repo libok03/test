@@ -58,12 +58,13 @@ function play(btn, src){
 function audioPath(lesson, file){
   return file ? `${lesson.audioDir || `audio/lesson${lesson.lesson}/`}${file}` : null;
 }
-function makeCard(lesson, item){
+function makeCard(lesson, item, index){
   const b=document.createElement('button');
   b.type='button'; b.className='card'; b.setAttribute('aria-pressed','false');
+  const number=document.createElement('span'); number.className='card-number'; number.textContent=String(index+1).padStart(2,'0');
   const lang=document.createElement('span'); lang.className='txt'; lang.lang='fr'; lang.textContent=item.text;
   const icon=document.createElement('span'); icon.className='icon'; icon.innerHTML=SPEAKER+BARS;
-  b.append(icon,lang);
+  b.append(number,lang,icon);
   const src=audioPath(lesson,item.audio);
   if(!src){ markMissing(b); }
   else b.addEventListener('click',()=>play(b,src));
@@ -82,7 +83,7 @@ function renderLesson(lesson){
     const h=document.createElement('h2'); h.textContent=sec.title||'';
     const small=document.createElement('small'); small.textContent=`${sec.items.length}개`; h.append(small);
     const grid=document.createElement('div'); grid.className='grid'+(sec.columns===3?' cols-3':'');
-    sec.items.forEach(it=>grid.append(makeCard(lesson,it)));
+    sec.items.forEach((it,index)=>grid.append(makeCard(lesson,it,index)));
     el.append(h,grid); $content.append(el);
   });
 }
